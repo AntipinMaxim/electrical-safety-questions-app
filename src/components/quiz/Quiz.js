@@ -9,8 +9,9 @@ const Quiz = () => {
     const [index, setIndex] = useState(0)
     const [answerSelected, setAnswerSelected] = useState(false)
     const [lastQuestion, setLastQuestion] = useState(false)
+    const [answersGiven, setAnswersGiven] = useState(0)
     const [correctAnswers, setCorrectAnswers] = useState(0)
-    const [wrongAnswers, setWrongAnswers] = useState(0)
+    const [сomplete, setComplete] = useState(false)
 
     const answerRefs = useRef([])
 
@@ -32,6 +33,7 @@ const Quiz = () => {
             const correctIndex = questions[index].ans - 1
 
             if(i === correctIndex) {
+                setCorrectAnswers(prev => prev + 1)
                 answerRefs.current[i].style.backgroundColor = 'green'
             } else {
                 answerRefs.current.forEach((ref) => {
@@ -42,6 +44,7 @@ const Quiz = () => {
                 })
             }
             setAnswerSelected(true)
+            setAnswersGiven(prev => prev + 1)
             if(index + 1 === questions.length) {
                 setLastQuestion(true)
             }
@@ -64,24 +67,44 @@ const Quiz = () => {
                 </li>
             )
         })
-        return(
-            <>
-                <h2>{question}</h2>
-                <ul>
-                    {answers}
-                </ul>
-            </> 
-        )
+        if(сomplete) {
+            return(
+                <>
+                    <span>Ответов дано на {answersGiven} вопросов.</span>
+                    <span>Из {answersGiven} вопросов, правильных {correctAnswers}</span>
+                </> 
+            )
+        } else {
+            return(
+                <>
+                    <h2>{question}</h2>
+                    <ul>
+                        {answers}
+                    </ul>
+                </> 
+            )
+        }
     }      
 
+    const сompleteQuiz = () => {
+        setComplete(true)
+    }
+    const startAgain = () => {
+        setComplete(false)
+        setIndex(0)
+    }
 
     return (
         <div className="container">
             <h1>QUIZ APP</h1>
             <hr />
                 {renderQuestion()}
-            {lastQuestion ? <button onClick={changeQuestion}>Результат</button> : <button onClick={changeQuestion}>Следующий</button>}
-            <div className='index'>{index + 1} из {questions.length} вопросов</div>
+            <div className='buttons'>
+                {сomplete ? <button onClick={startAgain}>Начать сначала</button>: <button onClick={сompleteQuiz}>Завершить</button>}
+                {lastQuestion || сomplete ? null : <button onClick={changeQuestion}>Следующий</button>}    
+            </div>
+            
+            {сomplete ? null : <div className='index'>{index + 1} из {questions.length} вопросов</div>}
         </div>
     )
 }

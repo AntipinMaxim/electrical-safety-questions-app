@@ -35,19 +35,27 @@
             cursor: pointer;
         }
     }
-    button{
-        margin: auto;
-        width: 250px;
-        height: 65px;
-        background: #553f9a;
-        color: #fff;
-        font-size: 25px;
-        font-weight: 500;
-        border-radius: 8px;
-        cursor: pointer;
+    .buttons{
+        display: flex;
+        justify-content: center;
+        button{
+            width: 250px;
+            height: 65px;
+            background: #553f9a;
+            color: #fff;
+            font-size: 25px;
+            font-weight: 500;
+            border-radius: 8px;
+            cursor: pointer;
+        }
     }
+    
     .index{
         margin: auto;
         font-size: 18px;
+    }
+    span {
+        text-align: center;
+        font-size: 25px;
     }
 }
