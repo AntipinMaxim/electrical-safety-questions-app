@@ -7,6 +7,7 @@ import { data } from '../../assets/questions'
 const Quiz = () => {
     const [questions, setQuestions] = useState(data)
     const [index, setIndex] = useState(0)
+    const [inputValue, setInputValue] = useState('')
     const [answerSelected, setAnswerSelected] = useState(false)
     const [lastQuestion, setLastQuestion] = useState(false)
     const [answersGiven, setAnswersGiven] = useState(0)
@@ -94,6 +95,17 @@ const Quiz = () => {
         setIndex(0)
     }
 
+    const goToQuestion = () => {
+        if(inputValue && inputValue <= questions.length) {
+            setIndex(Number(inputValue - 1))
+            setInputValue('')
+        } 
+    }
+    
+    const inputChange = (value) => {
+        setInputValue(value)
+    }
+
     return (
         <div className="container">
             <h1>QUIZ APP</h1>
@@ -103,7 +115,21 @@ const Quiz = () => {
                 {сomplete ? <button onClick={startAgain}>Начать сначала</button>: <button onClick={сompleteQuiz}>Завершить</button>}
                 {lastQuestion || сomplete ? null : <button onClick={changeQuestion}>Следующий</button>}    
             </div>
-            
+            {сomplete ? null : <div className="input-group">
+                <input type="text" 
+                       className="input no-spinners"
+                       placeholder='Номер вопроса'
+                       value={inputValue}
+                       onKeyDown={(e) => {if (e.key === 'Enter') goToQuestion()}}
+                       onChange={e => {
+                        const value = e.currentTarget.value
+                        const digitsOnly = value.replace(/\D/g, '')
+                        inputChange(digitsOnly)}}/>
+                <input className="button--submit" 
+                       value="Перейти" 
+                       type="submit"
+                       onClick={goToQuestion}/>
+            </div>}
             {сomplete ? null : <div className='index'>{index + 1} из {questions.length} вопросов</div>}
         </div>
     )
